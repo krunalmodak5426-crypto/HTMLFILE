@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculator with Sound</title>
+<style>
+    body {
+        background: #000;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .calculator {
+        background: #1e1e1e;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #display {
+        width: 280px;
+        height: 60px;
+        font-size: 2em;
+        text-align: right;
+        border: none;
+        background: #333;
+        color: white;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 15px;
+        outline: none;
+    }
+    .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 65px);
+        gap: 10px;
+    }
+    button {
+        height: 65px;
+        width: 65px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 50%;
+        background: #2c2c2c;
+        color: white;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    button:hover {
+        background: #444;
+    }
+    .operator {
+        background: #ffcc00;
+        color: black;
+    }
+    .operator:hover {
+        background: #e6b800;
+    }
+    .ac {
+        background: #ff3b30;
+    }
+    .ac:hover {
+        background: #e63227;
+    }
+    .del {
+        background: #5ac8fa;
+    }
+    .del:hover {
+        background: #40b0e6;
+    }
+</style>
+</head>
+<body>
+
+<div class="calculator">
+    <input type="text" id="display" readonly>
+    <div class="buttons">
+        <button class="ac" onclick="clearDisplay()">AC</button>
+        <button class="del" onclick="deleteLast()">DEL</button>
+        <button onclick="appendValue('%')">%</button>
+        <button class="operator" onclick="appendValue('/')">÷</button>
+
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button class="operator" onclick="appendValue('*')">×</button>
+
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button class="operator" onclick="appendValue('-')">−</button>
+
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button class="operator" onclick="appendValue('+')">+</button>
+
+        <button onclick="appendValue('0')">0</button>
+        <button onclick="appendValue('.')">.</button>
+        <button style="grid-column: span 2;" class="operator" onclick="calculate()">=</button>
+    </div>
+</div>
+
+<!-- Load a reliable sound -->
+<audio id="clickSound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
+
+<script>
+    const display = document.getElementById("display");
+    const clickSound = document.getElementById("clickSound");
+
+    function playSound() {
+        clickSound.currentTime = 0; // restart sound
+        clickSound.play();
+    }
+
+    function appendValue(value) {
+        playSound();
+        display.value += value;
+    }
+
+    function calculate() {
+        playSound();
+        try {
+            display.value = eval(display.value) || "";
+        } catch {
+            display.value = "Error";
+        }
+    }
+
+    function clearDisplay() {
+        playSound();
+        display.value = "";
+    }
+
+    function deleteLast() {
+        playSound();
+        display.value = display.value.slice(0, -1);
+    }
+</script>
+
+</body>
+</html>
